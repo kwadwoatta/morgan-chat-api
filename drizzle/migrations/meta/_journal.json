@@ -1,0 +1,34 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1711797556322,
+      "tag": "0000_known_the_hood",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1711800595590,
+      "tag": "0001_clever_red_shift",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1711801446146,
+      "tag": "0002_lush_famine",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1711801528933,
+      "tag": "0003_thankful_skaar",
+      "breakpoints": true
+    }
+  ]
+}

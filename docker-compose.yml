@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  dev-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: morgan-chat
+    # volumes:
+    #   - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - kwadwoatta
+
+networks:
+  kwadwoatta:
