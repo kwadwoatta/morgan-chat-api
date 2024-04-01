@@ -1,12 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import * as argon from 'argon2';
+import { eq } from 'drizzle-orm';
+import { users } from 'drizzle/schema';
+import { DrizzleService } from 'src/drizzle/drizzle.service';
+import { AuthDto } from './dto';
 
 @Injectable()
 export class AuthService {
-  login() {
-    return { msg: 'I have signed up' };
+  constructor(
+    private drizzle: DrizzleService,
+    private jwt: JwtService,
+    private config: ConfigService,
+  ) {}
+
+  async signup({ email, password }: AuthDto) {
+    const hash = await argon.hash(password);
+
+    const user = await this.drizzle.db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
+    if (user) throw new ConflictException('credentials taken');
+
+    const newUsers = await this.drizzle.db
+      .insert(users)
+      .values({ email, hash })
+      .returning();
+
+    return this.signToken(newUsers[0].id, newUsers[0].email);
   }
 
-  signup() {
-    return { msg: 'I have signed in' };
+  async signin({ email, password }: AuthDto) {
+    const user = await this.drizzle.db.query.users
+      .findFirst({
+        where: eq(users.email, email),
+      })
+      .execute();
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    const pwMatches = await argon.verify(user.hash, password);
+    if (!pwMatches) {
+      throw new ForbiddenException('credentials incorrect');
+    }
+
+    return this.signToken(user.id, user.email);
+  }
+
+  async signToken(
+    userId: number,
+    email: string,
+  ): Promise<{ access_token: string }> {
+    const payload = {
+      sub: userId,
+      email,
+    };
+
+    const access_token = await this.jwt.signAsync(payload, {
+      expiresIn: '15m',
+      secret: this.config.get('JWT_SECRET'),
+    });
+
+    return { access_token };
   }
 }
