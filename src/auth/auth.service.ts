@@ -8,8 +8,8 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { eq } from 'drizzle-orm';
-import { users } from 'drizzle/schema';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
+import { users } from 'src/drizzle/schema';
 import { AuthDto } from './dto';
 
 @Injectable()

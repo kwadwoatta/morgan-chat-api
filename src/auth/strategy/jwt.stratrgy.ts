@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { eq } from 'drizzle-orm';
-import { users } from 'drizzle/schema';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
+import { users } from 'src/drizzle/schema';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {

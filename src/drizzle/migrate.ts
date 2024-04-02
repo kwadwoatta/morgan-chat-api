@@ -8,7 +8,7 @@
 
 // async function main() {
 //   console.log('migration started ...');
-//   await migrate(db, { migrationsFolder: 'drizzle/migrations' });
+//   await migrate(db, { migrationsFolder: 'db/migrations' });
 //   console.log('migration ended ...');
 //   process.exit(0);
 // }
