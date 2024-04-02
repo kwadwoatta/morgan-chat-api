@@ -36,7 +36,7 @@ export class AuthService {
     return this.signToken(newUsers[0].id, newUsers[0].email);
   }
 
-  async signin({ email, password }: AuthDto) {
+  async login({ email, password }: AuthDto) {
     const user = await this.drizzle.db.query.users
       .findFirst({
         where: eq(users.email, email),

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Client } from 'pg';
-import { PgClientAsyncProvider } from './pgclient.provider';
+import { PgAsyncProvider } from './pgclient.provider';
 
 @Injectable()
 export class PgClientService {
-  constructor(@Inject(PgClientAsyncProvider) readonly client: Client) {}
+  constructor(@Inject(PgAsyncProvider) readonly client: Client) {}
 }

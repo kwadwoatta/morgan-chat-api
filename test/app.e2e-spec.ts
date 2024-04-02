@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import * as request from 'supertest';
@@ -19,6 +19,7 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     await app.init();
 
     pg = app.get(PgClientService);
@@ -34,11 +35,25 @@ describe('AppController (e2e)', () => {
 
   describe('Auth', () => {
     const dto: AuthDto = {
-      email: 'p@test.com',
+      email: 'one@two.com',
       password: '123',
     };
 
     describe('Signup', () => {
+      it('should throw if email is empty', () => {
+        return request(app.getHttpServer())
+          .post('/auth/signup')
+          .send({ password: dto.password })
+          .expect(400);
+      });
+
+      it('should throw if password is empty', () => {
+        return request(app.getHttpServer())
+          .post('/auth/signup')
+          .send({ email: dto.email })
+          .expect(400);
+      });
+
       it('should signup', () => {
         return request(app.getHttpServer())
           .post('/auth/signup')
@@ -47,8 +62,22 @@ describe('AppController (e2e)', () => {
       });
     });
 
-    describe('Signin', () => {
-      it('should signin', () => {
+    describe('Login', () => {
+      it('should throw if email is empty', () => {
+        return request(app.getHttpServer())
+          .post('/auth/login')
+          .send({ password: dto.password })
+          .expect(400);
+      });
+
+      it('should throw if password is empty', () => {
+        return request(app.getHttpServer())
+          .post('/auth/login')
+          .send({ email: dto.email })
+          .expect(400);
+      });
+
+      it('should login', () => {
         return request(app.getHttpServer())
           .post('/auth/login')
           .send(dto)

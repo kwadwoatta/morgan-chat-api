@@ -1,7 +1,7 @@
 import { Provider } from '@nestjs/common';
 import { Client } from 'pg';
 
-export const PgClientAsyncProvider = 'PgClientAsyncProvider';
+export const PgAsyncProvider = 'PgAsyncProvider';
 
 export const PgClientProvider: Provider = {
   useFactory: () => {
@@ -11,5 +11,5 @@ export const PgClientProvider: Provider = {
 
     return client;
   },
-  provide: PgClientAsyncProvider,
+  provide: PgAsyncProvider,
 };
