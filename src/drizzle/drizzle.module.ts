@@ -1,12 +1,12 @@
 import { Global, Module } from '@nestjs/common';
 
-import { ConfigModule } from '@nestjs/config';
+import { PgClientModule } from 'src/pgclient/pgclient.module';
 import { drizzleProvider } from './drizzle.provider';
 import { DrizzleService } from './drizzle.service';
 
 @Global()
 @Module({
-  imports: [ConfigModule],
+  imports: [PgClientModule],
   providers: [drizzleProvider, DrizzleService],
   exports: [DrizzleService],
 })
