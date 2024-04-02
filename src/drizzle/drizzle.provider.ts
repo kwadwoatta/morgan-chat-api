@@ -9,9 +9,9 @@ export const DrizzleAsyncProvider = 'DrizzleAsyncProvider';
 export const drizzleProvider: Provider = {
   provide: DrizzleAsyncProvider,
   inject: [ConfigService],
-  useFactory: async (config: ConfigService) => {
+  useFactory: async () => {
     const client = new Client({
-      connectionString: config.get('DB_URL'),
+      connectionString: process.env.DB_URL,
     });
 
     await client.connect();

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DrizzleAsyncProvider } from './drizzle.provider';
 import * as schema from './schema';
 
@@ -7,7 +7,7 @@ import * as schema from './schema';
 export class DrizzleService {
   constructor(
     @Inject(DrizzleAsyncProvider)
-    readonly db: PostgresJsDatabase<typeof schema>,
+    readonly db: NodePgDatabase<typeof schema>,
   ) {}
 
   async cleanDB() {

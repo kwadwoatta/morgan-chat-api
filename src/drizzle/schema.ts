@@ -28,7 +28,9 @@ export const notes = pgTable('notes', {
   name: text('name'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  authorId: integer('author_id').references(() => users.id),
+  authorId: integer('author_id').references(() => users.id, {
+    onDelete: 'cascade',
+  }),
 });
 
 export const notesRelations = relations(notes, ({ one, many }) => ({

@@ -29,6 +29,20 @@
       "when": 1711801528933,
       "tag": "0003_thankful_skaar",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1712067888056,
+      "tag": "0004_rainy_deathbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1712075790778,
+      "tag": "0005_past_tarot",
+      "breakpoints": true
     }
   ]
 }
