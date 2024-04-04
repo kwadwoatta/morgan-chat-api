@@ -5,6 +5,7 @@ import { DocumentModule } from './document/document.module';
 import { DrizzleModule } from './drizzle/drizzle.module';
 import { PgClientModule } from './pgclient/pgclient.module';
 import { UserModule } from './user/user.module';
+import { NoteModule } from './note/note.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module';
     DocumentModule,
     DrizzleModule,
     PgClientModule,
+    NoteModule,
   ],
 })
 export class AppModule {}
