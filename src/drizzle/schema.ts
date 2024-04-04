@@ -1,12 +1,5 @@
 import { relations } from 'drizzle-orm';
-import {
-  integer,
-  pgEnum,
-  pgTable,
-  text,
-  timestamp,
-  uuid,
-} from 'drizzle-orm/pg-core';
+import { pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -28,7 +21,7 @@ export const notes = pgTable('notes', {
   name: text('name'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  authorId: integer('author_id').references(() => users.id, {
+  authorId: uuid('author_id').references(() => users.id, {
     onDelete: 'cascade',
   }),
 });
@@ -55,7 +48,7 @@ export const documents = pgTable('documents', {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
   embedding: text('embedding'),
   embeddingState: embeddingStateEnum('pending'),
-  noteId: integer('note_id').references(() => notes.id),
+  noteId: uuid('note_id').references(() => notes.id),
 });
 
 export const documentsRelations = relations(documents, ({ one }) => ({

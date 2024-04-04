@@ -13,10 +13,6 @@ export class CreateNoteDto {
   @IsNotEmpty()
   name;
 
-  @IsString()
-  @IsUUID()
-  authorId;
-
   @IsArray()
   @ArrayMinSize(0)
   @ArrayMaxSize(10)

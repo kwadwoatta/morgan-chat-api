@@ -1,15 +1,26 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class EditNoteDto {
   @IsString()
   @IsNotEmpty()
-  title: string;
+  @IsOptional()
+  name?: string;
+
+  @IsArray()
+  @ArrayMinSize(0)
+  @ArrayMaxSize(10)
+  @IsUUID(undefined, { each: true })
+  documents: Set<string>;
 
   @IsString()
   @IsOptional()
   description?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  link: string;
 }
