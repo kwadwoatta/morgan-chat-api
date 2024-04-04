@@ -3,13 +3,13 @@ import {
   integer,
   pgEnum,
   pgTable,
-  serial,
   text,
   timestamp,
+  uuid,
 } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
   name: text('name'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
@@ -24,7 +24,7 @@ export const userRelations = relations(users, ({ many }) => ({
 }));
 
 export const notes = pgTable('notes', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
   name: text('name'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
@@ -48,7 +48,7 @@ export const embeddingStateEnum = pgEnum('embedding_state', [
 ]);
 
 export const documents = pgTable('documents', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
   name: text('name'),
   storageLink: text('storage_link'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
