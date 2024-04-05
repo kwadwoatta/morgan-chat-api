@@ -13,10 +13,10 @@ export const users = pgTable('users', {
 });
 
 export const userRelations = relations(users, ({ many }) => ({
-  notes: many(notes),
+  notebooks: many(notebooks),
 }));
 
-export const notes = pgTable('notes', {
+export const notebooks = pgTable('notebooks', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
@@ -28,10 +28,10 @@ export const notes = pgTable('notes', {
     .notNull(),
 });
 
-export const notesRelations = relations(notes, ({ one, many }) => ({
+export const notebooksRelations = relations(notebooks, ({ one, many }) => ({
   author: one(users, {
     references: [users.id],
-    fields: [notes.authorId],
+    fields: [notebooks.authorId],
   }),
   documents: many(documents),
 }));
@@ -51,13 +51,13 @@ export const documents = pgTable('documents', {
   embedding: text('embedding').notNull(),
   embeddingState: embeddingStateEnum('pending').notNull(),
   notebookId: uuid('notebook_id')
-    .references(() => notes.id)
+    .references(() => notebooks.id)
     .notNull(),
 });
 
 export const documentsRelations = relations(documents, ({ one }) => ({
-  note: one(notes, {
-    references: [notes.id],
+  note: one(notebooks, {
+    references: [notebooks.id],
     fields: [documents.notebookId],
   }),
 }));

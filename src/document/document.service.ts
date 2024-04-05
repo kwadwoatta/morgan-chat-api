@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
-import { documents, notes } from 'src/drizzle/schema';
+import { documents, notebooks } from 'src/drizzle/schema';
 import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
@@ -30,7 +30,7 @@ export class DocumentService {
   //     .set({
   //       ...dto,
   //     })
-  //     .where(and(eq(notes.id, notebookId), eq(documents.id, documentId)))
+  //     .where(and(eq(notebooks.id, notebookId), eq(documents.id, documentId)))
   //     .returning();
   // }
 
@@ -40,20 +40,20 @@ export class DocumentService {
     return this.drizzle.db
       .select()
       .from(documents)
-      .where(and(eq(notes.id, notebookId)));
+      .where(and(eq(notebooks.id, notebookId)));
   }
 
   getDocumentById(notebookId: string, documentId: string) {
     return this.drizzle.db
       .select()
       .from(documents)
-      .where(and(eq(notes.id, notebookId), eq(documents.id, documentId)));
+      .where(and(eq(notebooks.id, notebookId), eq(documents.id, documentId)));
   }
 
   deleteDocument(notebookId: string, documentId: string) {
     return this.drizzle.db
       .delete(documents)
-      .where(and(eq(notes.id, notebookId), eq(documents.id, documentId)));
+      .where(and(eq(notebooks.id, notebookId), eq(documents.id, documentId)));
     // .returning({ id: Documents.id });
   }
 }

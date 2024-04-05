@@ -1,4 +1,4 @@
 import { InferSelectModel } from 'drizzle-orm';
-import { notes } from 'src/drizzle/schema';
+import { notebooks } from 'src/drizzle/schema';
 
-export type Note = InferSelectModel<typeof notes>;
+export type Note = InferSelectModel<typeof notebooks>;

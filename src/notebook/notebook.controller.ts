@@ -16,7 +16,7 @@ import { CreateNotebookDto, EditNotebookDto } from './dto';
 import { NotebookService } from './notebook.service';
 
 @UseGuards(JwtGuard)
-@Controller('notes')
+@Controller('notebooks')
 export class NotebookController {
   constructor(private noteService: NotebookService) {}
 

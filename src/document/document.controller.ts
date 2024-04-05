@@ -19,7 +19,7 @@ import { JwtGuard } from 'src/auth/guard';
 import { DocumentService } from './document.service';
 
 @UseGuards(JwtGuard)
-@Controller('notes/:notebookId/documents')
+@Controller('notebooks/:notebookId/documents')
 export class DocumentController {
   constructor(private readonly documentService: DocumentService) {}
 

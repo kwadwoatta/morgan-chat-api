@@ -14,7 +14,7 @@ export class DrizzleService {
     this.db.transaction(async (tx) => {
       await tx.delete(schema.users);
       await tx.delete(schema.documents);
-      await tx.delete(schema.notes);
+      await tx.delete(schema.notebooks);
     });
   }
 }
