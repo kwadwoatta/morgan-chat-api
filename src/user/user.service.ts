@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import { users } from 'src/drizzle/schema';
 import { EditUserDto } from './dto';
@@ -12,9 +13,9 @@ export class UserService {
       await this.drizzle.db
         .update(users)
         .set({
-          id: userId,
           ...dto,
         })
+        .where(eq(users.id, userId))
         .returning()
     )[0];
 

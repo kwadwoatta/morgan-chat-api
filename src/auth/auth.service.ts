@@ -37,11 +37,9 @@ export class AuthService {
   }
 
   async login({ email, password }: AuthDto) {
-    const user = await this.drizzle.db.query.users
-      .findFirst({
-        where: eq(users.email, email),
-      })
-      .execute();
+    const user = await this.drizzle.db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
 
     if (!user) {
       throw new UnauthorizedException();

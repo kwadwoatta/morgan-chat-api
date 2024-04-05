@@ -20,9 +20,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: { sub: string; email: string }) {
-    const user = await this.drizzle.db.query.users
-      .findFirst({ where: eq(users.id, payload.sub) })
-      .execute();
+    const user = await this.drizzle.db.query.users.findFirst({
+      where: eq(users.id, payload.sub),
+    });
 
     delete user.hash;
     return user;

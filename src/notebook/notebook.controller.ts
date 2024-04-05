@@ -14,6 +14,7 @@ import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { CreateNotebookDto, EditNotebookDto } from './dto';
 import { NotebookService } from './notebook.service';
+import { ValidateUUIDPipe } from './pipe/validate-uuid.pipe';
 
 @UseGuards(JwtGuard)
 @Controller('notebooks')
@@ -28,7 +29,7 @@ export class NotebookController {
   @Patch(':notebookId')
   editNote(
     @GetUser('id') userId: string,
-    @Param('notebookId') notebookId: string,
+    @Param('notebookId', new ValidateUUIDPipe()) notebookId: string,
     @Body() dto: EditNotebookDto,
   ) {
     return this.notebookService.editNotebook(userId, notebookId, dto);
@@ -42,7 +43,7 @@ export class NotebookController {
   @Get(':notebookId')
   getNoteById(
     @GetUser('id') userId: string,
-    @Param('notebookId') notebookId: string,
+    @Param('notebookId', new ValidateUUIDPipe()) notebookId: string,
   ) {
     return this.notebookService.getNotebookById(userId, notebookId);
   }
@@ -51,7 +52,7 @@ export class NotebookController {
   @Delete(':notebookId')
   deleteNote(
     @GetUser('id') userId: string,
-    @Param('notebookId') notebookId: string,
+    @Param('notebookId', new ValidateUUIDPipe()) notebookId: string,
   ) {
     return this.notebookService.deleteNotebook(userId, notebookId);
   }

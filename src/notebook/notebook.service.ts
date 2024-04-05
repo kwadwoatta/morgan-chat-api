@@ -22,10 +22,9 @@ export class NotebookService {
     return this.drizzle.db
       .update(notebooks)
       .set({
-        authorId: userId,
         ...dto,
       })
-      .where(and(eq(users.id, userId), eq(notebooks.id, notebookId)))
+      .where(and(eq(notebooks.authorId, userId), eq(notebooks.id, notebookId)))
       .returning();
   }
 
@@ -48,6 +47,6 @@ export class NotebookService {
   deleteNotebook(userId: string, notebookId: string) {
     return this.drizzle.db
       .delete(notebooks)
-      .where(and(eq(users.id, userId), eq(notebooks.id, notebookId)));
+      .where(and(eq(notebooks.authorId, userId), eq(notebooks.id, notebookId)));
   }
 }
