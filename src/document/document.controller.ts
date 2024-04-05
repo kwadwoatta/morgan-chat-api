@@ -19,7 +19,7 @@ import { JwtGuard } from 'src/auth/guard';
 import { DocumentService } from './document.service';
 
 @UseGuards(JwtGuard)
-@Controller('notes/:noteId/documents')
+@Controller('notes/:notebookId/documents')
 export class DocumentController {
   constructor(private readonly documentService: DocumentService) {}
 
@@ -28,7 +28,7 @@ export class DocumentController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadDocument(
     @GetUser('id') userId: string,
-    @Param('noteId') noteId: string,
+    @Param('notebookId') notebookId: string,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -39,18 +39,21 @@ export class DocumentController {
     )
     files: Array<Express.Multer.File>,
   ) {
-    await this.documentService.uploadDocument(userId, noteId, files);
+    await this.documentService.uploadDocument(userId, notebookId, files);
   }
 
   @Get()
-  getDocuments(@GetUser('id') userId: string, @Param('noteId') noteId: string) {
-    return this.documentService.getDocuments(userId, noteId);
+  getDocuments(
+    @GetUser('id') userId: string,
+    @Param('notebookId') notebookId: string,
+  ) {
+    return this.documentService.getDocuments(userId, notebookId);
   }
 
   @Get(':documentId')
   getDocumentById(
     @GetUser('id') userId: string,
-    @Param('noteId') noteId: string,
+    @Param('notebookId') notebookId: string,
     @Param('documentId') documentId: string,
   ) {
     return this.documentService.getDocumentById(userId, documentId);
@@ -60,7 +63,7 @@ export class DocumentController {
   @Delete(':documentId')
   deleteDocument(
     @GetUser('id') userId: string,
-    @Param('noteId') noteId: string,
+    @Param('notebookId') notebookId: string,
     @Param('documentId') documentId: string,
   ) {
     return this.documentService.deleteDocument(userId, documentId);

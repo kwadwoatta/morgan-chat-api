@@ -25,13 +25,13 @@ export class NotebookController {
     return this.noteService.createNote(userId, dto);
   }
 
-  @Patch(':noteId')
+  @Patch(':notebookId')
   editNote(
     @GetUser('id') userId: string,
-    @Param('noteId') noteId: string,
+    @Param('notebookId') notebookId: string,
     @Body() dto: EditNotebookDto,
   ) {
-    return this.noteService.editNote(userId, noteId, dto);
+    return this.noteService.editNote(userId, notebookId, dto);
   }
 
   @Get()
@@ -39,14 +39,20 @@ export class NotebookController {
     return this.noteService.getNotes(userId);
   }
 
-  @Get(':noteId')
-  getNoteById(@GetUser('id') userId: string, @Param('noteId') noteId: string) {
-    return this.noteService.getNoteById(userId, noteId);
+  @Get(':notebookId')
+  getNoteById(
+    @GetUser('id') userId: string,
+    @Param('notebookId') notebookId: string,
+  ) {
+    return this.noteService.getNoteById(userId, notebookId);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete(':noteId')
-  deleteNote(@GetUser('id') userId: string, @Param('noteId') noteId: string) {
-    return this.noteService.deleteNote(userId, noteId);
+  @Delete(':notebookId')
+  deleteNote(
+    @GetUser('id') userId: string,
+    @Param('notebookId') notebookId: string,
+  ) {
+    return this.noteService.deleteNote(userId, notebookId);
   }
 }

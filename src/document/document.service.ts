@@ -13,47 +13,47 @@ export class DocumentService {
 
   async uploadDocument(
     userId: string,
-    noteId: string,
+    notebookId: string,
     files: Array<Express.Multer.File>,
   ) {
     return this.uploadService.upload(
       files.map(({ originalname, buffer }) => ({
-        key: `user:${userId}/note:${noteId}/filename:${originalname}`,
+        key: `user:${userId}/note:${notebookId}/filename:${originalname}`,
         file: buffer,
       })),
     );
   }
 
-  // async editDocument(noteId: string, documentId: string, dto: EditDocumentDto) {
+  // async editDocument(notebookId: string, documentId: string, dto: EditDocumentDto) {
   //   return this.drizzle.db
   //     .update(documents)
   //     .set({
   //       ...dto,
   //     })
-  //     .where(and(eq(notes.id, noteId), eq(documents.id, documentId)))
+  //     .where(and(eq(notes.id, notebookId), eq(documents.id, documentId)))
   //     .returning();
   // }
 
-  async getDocuments(userId: string, noteId: string) {
-    await this.uploadService.getAllFiles(`user:${userId}/note:${noteId}/`);
+  async getDocuments(userId: string, notebookId: string) {
+    await this.uploadService.getAllFiles(`user:${userId}/note:${notebookId}/`);
 
     return this.drizzle.db
       .select()
       .from(documents)
-      .where(and(eq(notes.id, noteId)));
+      .where(and(eq(notes.id, notebookId)));
   }
 
-  getDocumentById(noteId: string, documentId: string) {
+  getDocumentById(notebookId: string, documentId: string) {
     return this.drizzle.db
       .select()
       .from(documents)
-      .where(and(eq(notes.id, noteId), eq(documents.id, documentId)));
+      .where(and(eq(notes.id, notebookId), eq(documents.id, documentId)));
   }
 
-  deleteDocument(noteId: string, documentId: string) {
+  deleteDocument(notebookId: string, documentId: string) {
     return this.drizzle.db
       .delete(documents)
-      .where(and(eq(notes.id, noteId), eq(documents.id, documentId)));
+      .where(and(eq(notes.id, notebookId), eq(documents.id, documentId)));
     // .returning({ id: Documents.id });
   }
 }

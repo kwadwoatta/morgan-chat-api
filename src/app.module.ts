@@ -4,7 +4,7 @@ import { RouterModule } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { DocumentModule } from './document/document.module';
 import { DrizzleModule } from './drizzle/drizzle.module';
-import { NoteModule } from './note/note.module';
+import { NotebookModule } from './notebook/notebook.module';
 import { PgClientModule } from './pgclient/pgclient.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
@@ -20,15 +20,15 @@ import { UserModule } from './user/user.module';
     PgClientModule,
     UploadModule,
     DocumentModule,
-    NoteModule,
+    NotebookModule,
     RouterModule.register([
       {
-        path: 'notes',
-        module: NoteModule,
+        path: 'notebooks',
+        module: NotebookModule,
 
         children: [
           {
-            path: 'notes/:noteId/documents',
+            path: 'notebooks/:notebookId/documents',
             module: DocumentModule,
           },
         ],

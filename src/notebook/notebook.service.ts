@@ -18,14 +18,14 @@ export class NotebookService {
       .returning();
   }
 
-  editNote(userId: string, noteId: string, dto: EditNotebookDto) {
+  editNote(userId: string, notebookId: string, dto: EditNotebookDto) {
     return this.drizzle.db
       .update(notes)
       .set({
         authorId: userId,
         ...dto,
       })
-      .where(and(eq(users.id, userId), eq(notes.id, noteId)))
+      .where(and(eq(users.id, userId), eq(notes.id, notebookId)))
       .returning();
   }
 
@@ -36,17 +36,17 @@ export class NotebookService {
       .where(and(eq(users.id, userId)));
   }
 
-  getNoteById(userId: string, noteId: string) {
+  getNoteById(userId: string, notebookId: string) {
     return this.drizzle.db
       .select()
       .from(notes)
-      .where(and(eq(users.id, userId), eq(notes.id, noteId)));
+      .where(and(eq(users.id, userId), eq(notes.id, notebookId)));
   }
 
-  deleteNote(userId: string, noteId: string) {
+  deleteNote(userId: string, notebookId: string) {
     return this.drizzle.db
       .delete(notes)
-      .where(and(eq(users.id, userId), eq(notes.id, noteId)));
+      .where(and(eq(users.id, userId), eq(notes.id, notebookId)));
     // .returning({ id: notes.id });
   }
 }

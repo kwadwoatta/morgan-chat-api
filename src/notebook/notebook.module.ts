@@ -6,4 +6,4 @@ import { NotebookService } from './notebook.service';
   providers: [NotebookService],
   controllers: [NotebookController],
 })
-export class NoteModule {}
+export class NotebookModule {}

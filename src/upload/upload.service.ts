@@ -29,7 +29,7 @@ export class UploadService {
     return Promise.all(uploadPromises);
   }
 
-  async getAllFiles(key: string): Promise<string[]> {
+  async getAllFiles(key: string): Promise<{ buffer: Buffer; url: string }[]> {
     const listObjectsCommand = new ListObjectsCommand({
       Bucket: 'morganchat-bucket',
       Prefix: key,
@@ -37,7 +37,24 @@ export class UploadService {
 
     const { Contents } = await this.s3Client.send(listObjectsCommand);
 
-    return Contents.map((object) => object.Key);
+    const files = await Promise.all(
+      Contents.map(async (object) => {
+        const getObjectCommand = new GetObjectCommand({
+          Bucket: 'morganchat-bucket',
+          Key: object.Key,
+        });
+        const { Body } = await this.s3Client.send(getObjectCommand);
+        const chunks: Uint8Array[] = [];
+        for await (const chunk of Body as AsyncIterable<Uint8Array>) {
+          chunks.push(chunk);
+        }
+        const buffer = Buffer.concat(chunks);
+        const url = `https://morganchat-bucket.s3.af-south-1.amazonaws.com/${object.Key}`;
+        return { buffer, url };
+      }),
+    );
+
+    return files;
   }
 
   async getFile(key: string): Promise<{ buffer: Buffer; url: string }> {

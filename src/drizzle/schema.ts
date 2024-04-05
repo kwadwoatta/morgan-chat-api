@@ -50,7 +50,7 @@ export const documents = pgTable('documents', {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
   embedding: text('embedding').notNull(),
   embeddingState: embeddingStateEnum('pending').notNull(),
-  noteId: uuid('note_id')
+  notebookId: uuid('notebook_id')
     .references(() => notes.id)
     .notNull(),
 });
@@ -58,6 +58,6 @@ export const documents = pgTable('documents', {
 export const documentsRelations = relations(documents, ({ one }) => ({
   note: one(notes, {
     references: [notes.id],
-    fields: [documents.noteId],
+    fields: [documents.notebookId],
   }),
 }));
