@@ -22,10 +22,10 @@ export const notebooks = pgTable('notebooks', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
   authorId: uuid('author_id')
+    .notNull()
     .references(() => users.id, {
       onDelete: 'cascade',
-    })
-    .notNull(),
+    }),
 });
 
 export const notebooksRelations = relations(notebooks, ({ one, many }) => ({
@@ -51,8 +51,8 @@ export const documents = pgTable('documents', {
   embedding: text('embedding').notNull(),
   embeddingState: embeddingStateEnum('pending').notNull(),
   notebookId: uuid('notebook_id')
-    .references(() => notebooks.id)
-    .notNull(),
+    .notNull()
+    .references(() => notebooks.id),
 });
 
 export const documentsRelations = relations(documents, ({ one }) => ({

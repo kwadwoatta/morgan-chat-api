@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { RouterModule } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { DocumentModule } from './document/document.module';
 import { DrizzleModule } from './drizzle/drizzle.module';
@@ -21,19 +20,19 @@ import { UserModule } from './user/user.module';
     UploadModule,
     DocumentModule,
     NotebookModule,
-    RouterModule.register([
-      {
-        path: 'notebooks',
-        module: NotebookModule,
+    // RouterModule.register([
+    //   {
+    //     path: 'notebooks',
+    //     module: NotebookModule,
 
-        children: [
-          {
-            path: 'notebooks/:notebookId/documents',
-            module: DocumentModule,
-          },
-        ],
-      },
-    ]),
+    //     children: [
+    //       {
+    //         path: 'notebooks/:notebookId/documents',
+    //         module: DocumentModule,
+    //       },
+    //     ],
+    //   },
+    // ]),
   ],
 })
 export class AppModule {}

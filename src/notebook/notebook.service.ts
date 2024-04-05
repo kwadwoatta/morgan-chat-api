@@ -8,7 +8,7 @@ import { CreateNotebookDto, EditNotebookDto } from './dto';
 export class NotebookService {
   constructor(private drizzle: DrizzleService) {}
 
-  createNote(userId: string, dto: CreateNotebookDto) {
+  createNotebook(userId: string, dto: CreateNotebookDto) {
     return this.drizzle.db
       .insert(notebooks)
       .values({
@@ -18,7 +18,7 @@ export class NotebookService {
       .returning();
   }
 
-  editNote(userId: string, notebookId: string, dto: EditNotebookDto) {
+  editNotebook(userId: string, notebookId: string, dto: EditNotebookDto) {
     return this.drizzle.db
       .update(notebooks)
       .set({
@@ -29,24 +29,25 @@ export class NotebookService {
       .returning();
   }
 
-  getNotes(userId: string) {
+  getNotebooks(userId: string) {
     return this.drizzle.db
       .select()
       .from(notebooks)
+      .leftJoin(users, eq(users.id, userId))
       .where(and(eq(users.id, userId)));
   }
 
-  getNoteById(userId: string, notebookId: string) {
+  getNotebookById(userId: string, notebookId: string) {
     return this.drizzle.db
       .select()
       .from(notebooks)
+      .leftJoin(users, eq(users.id, userId))
       .where(and(eq(users.id, userId), eq(notebooks.id, notebookId)));
   }
 
-  deleteNote(userId: string, notebookId: string) {
+  deleteNotebook(userId: string, notebookId: string) {
     return this.drizzle.db
       .delete(notebooks)
       .where(and(eq(users.id, userId), eq(notebooks.id, notebookId)));
-    // .returning({ id: notebooks.id });
   }
 }

@@ -18,11 +18,11 @@ import { NotebookService } from './notebook.service';
 @UseGuards(JwtGuard)
 @Controller('notebooks')
 export class NotebookController {
-  constructor(private noteService: NotebookService) {}
+  constructor(private notebookService: NotebookService) {}
 
   @Post()
   createNote(@GetUser('id') userId: string, @Body() dto: CreateNotebookDto) {
-    return this.noteService.createNote(userId, dto);
+    return this.notebookService.createNotebook(userId, dto);
   }
 
   @Patch(':notebookId')
@@ -31,12 +31,12 @@ export class NotebookController {
     @Param('notebookId') notebookId: string,
     @Body() dto: EditNotebookDto,
   ) {
-    return this.noteService.editNote(userId, notebookId, dto);
+    return this.notebookService.editNotebook(userId, notebookId, dto);
   }
 
-  @Get()
+  @Get('/')
   getNotes(@GetUser('id') userId: string) {
-    return this.noteService.getNotes(userId);
+    return this.notebookService.getNotebooks(userId);
   }
 
   @Get(':notebookId')
@@ -44,7 +44,7 @@ export class NotebookController {
     @GetUser('id') userId: string,
     @Param('notebookId') notebookId: string,
   ) {
-    return this.noteService.getNoteById(userId, notebookId);
+    return this.notebookService.getNotebookById(userId, notebookId);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -53,6 +53,6 @@ export class NotebookController {
     @GetUser('id') userId: string,
     @Param('notebookId') notebookId: string,
   ) {
-    return this.noteService.deleteNote(userId, notebookId);
+    return this.notebookService.deleteNotebook(userId, notebookId);
   }
 }

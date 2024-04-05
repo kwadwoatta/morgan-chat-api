@@ -40,6 +40,7 @@ export class DocumentService {
     return this.drizzle.db
       .select()
       .from(documents)
+      .leftJoin(notebooks, eq(notebooks.id, notebookId))
       .where(and(eq(notebooks.id, notebookId)));
   }
 
@@ -47,6 +48,7 @@ export class DocumentService {
     return this.drizzle.db
       .select()
       .from(documents)
+      .leftJoin(notebooks, eq(notebooks.id, notebookId))
       .where(and(eq(notebooks.id, notebookId), eq(documents.id, documentId)));
   }
 
