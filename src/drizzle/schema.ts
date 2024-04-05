@@ -6,7 +6,7 @@ export const users = pgTable('users', {
   name: text('name'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  email: text('email').unique(),
+  email: text('email').unique().notNull(),
   hash: text('hash'),
   firstName: text('first_name'),
   lastName: text('last_name'),
@@ -21,9 +21,11 @@ export const notes = pgTable('notes', {
   name: text('name'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  authorId: uuid('author_id').references(() => users.id, {
-    onDelete: 'cascade',
-  }),
+  authorId: uuid('author_id')
+    .references(() => users.id, {
+      onDelete: 'cascade',
+    })
+    .notNull(),
 });
 
 export const notesRelations = relations(notes, ({ one, many }) => ({
@@ -46,9 +48,11 @@ export const documents = pgTable('documents', {
   storageLink: text('storage_link'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  embedding: text('embedding'),
-  embeddingState: embeddingStateEnum('pending'),
-  noteId: uuid('note_id').references(() => notes.id),
+  embedding: text('embedding').notNull(),
+  embeddingState: embeddingStateEnum('pending').notNull(),
+  noteId: uuid('note_id')
+    .references(() => notes.id)
+    .notNull(),
 });
 
 export const documentsRelations = relations(documents, ({ one }) => ({
