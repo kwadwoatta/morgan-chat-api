@@ -35,7 +35,7 @@ export class NotebookController {
     return this.notebookService.editNotebook(userId, notebookId, dto);
   }
 
-  @Get('/')
+  @Get()
   getNotes(@GetUser('id') userId: string) {
     return this.notebookService.getNotebooks(userId);
   }

@@ -33,15 +33,14 @@ export class NotebookService {
       .select()
       .from(notebooks)
       .leftJoin(users, eq(users.id, userId))
-      .where(and(eq(users.id, userId)));
+      .where(and(eq(users.id, userId), eq(notebooks.authorId, userId)));
   }
 
   getNotebookById(userId: string, notebookId: string) {
     return this.drizzle.db
       .select()
       .from(notebooks)
-      .leftJoin(users, eq(users.id, userId))
-      .where(and(eq(users.id, userId), eq(notebooks.id, notebookId)));
+      .where(and(eq(notebooks.authorId, userId), eq(notebooks.id, notebookId)));
   }
 
   deleteNotebook(userId: string, notebookId: string) {
