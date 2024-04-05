@@ -2,45 +2,58 @@ import { Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import { documents, notes } from 'src/drizzle/schema';
-import { EditDocumentDto } from './dto/edit-Document.dto';
+import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class DocumentService {
-  constructor(private drizzle: DrizzleService) {}
+  constructor(
+    private drizzle: DrizzleService,
+    private readonly uploadService: UploadService,
+  ) {}
 
-  uploadDocument(noteId: string, file: Express.Multer.File) {
-    return { noteId, file };
+  async uploadDocument(
+    userId: string,
+    noteId: string,
+    files: Array<Express.Multer.File>,
+  ) {
+    return this.uploadService.upload(
+      files.map(({ originalname, buffer }) => ({
+        key: `user:${userId}/note:${noteId}/filename:${originalname}`,
+        file: buffer,
+      })),
+    );
   }
 
-  editDocument(noteId: string, DocumentId: string, dto: EditDocumentDto) {
-    return this.drizzle.db
-      .update(documents)
-      .set({
-        noteId: noteId,
-        ...dto,
-      })
-      .where(and(eq(notes.id, noteId), eq(documents.id, DocumentId)))
-      .returning();
-  }
+  // async editDocument(noteId: string, documentId: string, dto: EditDocumentDto) {
+  //   return this.drizzle.db
+  //     .update(documents)
+  //     .set({
+  //       ...dto,
+  //     })
+  //     .where(and(eq(notes.id, noteId), eq(documents.id, documentId)))
+  //     .returning();
+  // }
 
-  getDocuments(noteId: string) {
+  async getDocuments(userId: string, noteId: string) {
+    await this.uploadService.getAllFiles(`user:${userId}/note:${noteId}/`);
+
     return this.drizzle.db
       .select()
       .from(documents)
       .where(and(eq(notes.id, noteId)));
   }
 
-  getDocumentById(noteId: string, DocumentId: string) {
+  getDocumentById(noteId: string, documentId: string) {
     return this.drizzle.db
       .select()
       .from(documents)
-      .where(and(eq(notes.id, noteId), eq(documents.id, DocumentId)));
+      .where(and(eq(notes.id, noteId), eq(documents.id, documentId)));
   }
 
-  deleteDocument(noteId: string, DocumentId: string) {
+  deleteDocument(noteId: string, documentId: string) {
     return this.drizzle.db
       .delete(documents)
-      .where(and(eq(notes.id, noteId), eq(documents.id, DocumentId)));
+      .where(and(eq(notes.id, noteId), eq(documents.id, documentId)));
     // .returning({ id: Documents.id });
   }
 }

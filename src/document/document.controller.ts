@@ -1,50 +1,68 @@
 import {
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   HttpCode,
   HttpStatus,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from 'src/auth/guard';
 import { DocumentService } from './document.service';
 
-@Controller('documents')
+@UseGuards(JwtGuard)
+@Controller('notes/:noteId/documents')
 export class DocumentController {
-  constructor(private documentService: DocumentService) {}
+  constructor(private readonly documentService: DocumentService) {}
 
+  @HttpCode(HttpStatus.CREATED)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(
+  async uploadDocument(
     @GetUser('id') userId: string,
-    @UploadedFile() file: Express.Multer.File,
+    @Param('noteId') noteId: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1000 }),
+          new FileTypeValidator({ fileType: 'application/pdf' }),
+        ],
+      }),
+    )
+    files: Array<Express.Multer.File>,
   ) {
-    return this.documentService.uploadDocument(userId, file);
+    await this.documentService.uploadDocument(userId, noteId, files);
   }
 
   @Get()
-  getDocuments(@GetUser('id') userId: string) {
-    return this.documentService.getDocuments(userId);
+  getDocuments(@GetUser('id') userId: string, @Param('noteId') noteId: string) {
+    return this.documentService.getDocuments(userId, noteId);
   }
 
-  @Get(':id')
+  @Get(':documentId')
   getDocumentById(
     @GetUser('id') userId: string,
-    @Param('id') DocumentId: string,
+    @Param('noteId') noteId: string,
+    @Param('documentId') documentId: string,
   ) {
-    return this.documentService.getDocumentById(userId, DocumentId);
+    return this.documentService.getDocumentById(userId, documentId);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete(':id')
+  @Delete(':documentId')
   deleteDocument(
     @GetUser('id') userId: string,
-    @Param('id') DocumentId: string,
+    @Param('noteId') noteId: string,
+    @Param('documentId') documentId: string,
   ) {
-    return this.documentService.deleteDocument(userId, DocumentId);
+    return this.documentService.deleteDocument(userId, documentId);
   }
 }

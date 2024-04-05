@@ -8,10 +8,11 @@ import {
   IsUUID,
 } from 'class-validator';
 
-export class CreateNoteDto {
+export class EditNotebookDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  @IsOptional()
+  name?: string;
 
   @IsArray()
   @ArrayMinSize(0)

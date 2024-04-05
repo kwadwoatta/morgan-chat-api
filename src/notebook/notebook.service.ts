@@ -2,14 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
 import { DrizzleService } from 'src/drizzle/drizzle.service';
 import { notes, users } from 'src/drizzle/schema';
-import { CreateNoteDto } from './dto/create-note.dto';
-import { EditNoteDto } from './dto/edit-note.dto';
+import { CreateNotebookDto, EditNotebookDto } from './dto';
 
 @Injectable()
-export class NoteService {
+export class NotebookService {
   constructor(private drizzle: DrizzleService) {}
 
-  createNote(userId: string, dto: CreateNoteDto) {
+  createNote(userId: string, dto: CreateNotebookDto) {
     return this.drizzle.db
       .insert(notes)
       .values({
@@ -19,7 +18,7 @@ export class NoteService {
       .returning();
   }
 
-  editNote(userId: string, noteId: string, dto: EditNoteDto) {
+  editNote(userId: string, noteId: string, dto: EditNotebookDto) {
     return this.drizzle.db
       .update(notes)
       .set({
