@@ -16,7 +16,7 @@ describe(`AppController (e2e)`, () => {
   let drizzle: DrizzleService;
   let token: string;
   let notebookId: string;
-  let documentId: string;
+  // let documentId: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -164,7 +164,6 @@ describe(`AppController (e2e)`, () => {
 
       it(`should read notebook with notebook_id`, () => {
         expect(notebookId).toBeDefined();
-        console.log({ notebookId });
 
         return request(app.getHttpServer())
           .get(`/notebooks/${notebookId}`)
