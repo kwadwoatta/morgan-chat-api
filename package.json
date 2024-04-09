@@ -13,7 +13,7 @@
     "db:dev:restart": "pnpm db:dev:rm && pnpm db:dev:up && sleep 1 && pnpm drizzle:generate && pnpm drizzle:push",
     "db:test:rm": "docker compose rm test-db -s -f -v",
     "db:test:up": "docker compose up test-db -d",
-    "db:test:restart": "pnpm db:test:rm && pnpm db:test:up && sleep 1 && pnpm drizzle:generate && pnpm drizzle:push",
+    "db:test:restart": "pnpm db:test:rm && pnpm db:test:up && sleep 1 && pnpm drizzle:generate",
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",

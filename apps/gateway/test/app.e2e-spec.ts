@@ -29,6 +29,7 @@ describe(`AppController (e2e)`, () => {
 
     pg = app.get(PgClientService);
     drizzle = app.get(DrizzleService);
+    await drizzle.migrate();
     await drizzle.cleanDB();
   });
 
