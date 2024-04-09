@@ -1,3 +1,12 @@
 {
-  "cSpell.words": ["morganchat", "nestjs", "pgclient", "signin"]
+  "cSpell.words": [
+    "genai",
+    "langchain",
+    "morganchat",
+    "nestjs",
+    "pgclient",
+    "pgvector",
+    "signin",
+    "vectorstores"
+  ]
 }

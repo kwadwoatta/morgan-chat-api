@@ -8,9 +8,9 @@ export const DrizzleAsyncProvider = 'DrizzleAsyncProvider';
 export const drizzleProvider: Provider = {
   provide: DrizzleAsyncProvider,
   inject: [PgClientService],
-  useFactory: async ({ client }: PgClientService) => {
-    await client.connect();
-    const db = drizzle(client, { schema });
+  useFactory: async ({ vectorStore }: PgClientService) => {
+    // await client.connect();
+    const db = drizzle(vectorStore.client, { schema });
     return db;
   },
 };

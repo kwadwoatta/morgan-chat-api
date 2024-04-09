@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   dev-db:
-    image: postgres
+    image: pgvector/pgvector:pg16
     restart: always
     env_file:
       - .env
@@ -15,7 +15,7 @@ services:
       - .env:/.env
 
   test-db:
-    image: postgres
+    image: pgvector/pgvector:pg16
     restart: always
     env_file:
       - .env.test

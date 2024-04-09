@@ -33,7 +33,7 @@ describe(`AppController (e2e)`, () => {
   });
 
   afterAll(async () => {
-    await pg.client.end();
+    await pg.vectorStore.end();
     await app.close();
     execSync(`docker compose rm test-db -s -f -v`);
   });

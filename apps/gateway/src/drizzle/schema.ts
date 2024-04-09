@@ -1,5 +1,12 @@
 import { relations } from 'drizzle-orm';
-import { pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import {
+  customType,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+} from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
@@ -43,13 +50,30 @@ export const embeddingStateEnum = pgEnum('embedding_state', [
   'failure',
 ]);
 
+export const vector = customType<{
+  data: number[];
+  driverData: string;
+  config: { dimension: number };
+  default: false;
+}>({
+  dataType(config) {
+    return `vector(${config?.dimension ?? 256})`;
+  },
+  toDriver(value: number[]): string {
+    return JSON.stringify(value);
+  },
+  fromDriver(value: string): number[] {
+    return JSON.parse(value);
+  },
+});
+
 export const documents = pgTable('documents', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name'),
   storageLink: text('storage_link'),
-  embedding: text('embedding').notNull(),
+  embedding: vector('embedding', { dimension: 256 }).notNull(),
   embeddingState: embeddingStateEnum('pending').notNull(),
   notebookId: uuid('notebook_id')
     .notNull()
