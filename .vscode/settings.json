@@ -6,7 +6,10 @@
     "nestjs",
     "pgclient",
     "pgvector",
+    "proto",
+    "protoc",
     "signin",
+    "Ukef",
     "vectorstores"
   ]
 }

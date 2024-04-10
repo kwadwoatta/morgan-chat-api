@@ -20,19 +20,6 @@ import { UserModule } from './user/user.module';
     UploadModule,
     DocumentModule,
     NotebookModule,
-    // RouterModule.register([
-    //   {
-    //     path: 'notebooks',
-    //     module: NotebookModule,
-
-    //     children: [
-    //       {
-    //         path: 'notebooks/:notebookId/documents',
-    //         module: DocumentModule,
-    //       },
-    //     ],
-    //   },
-    // ]),
   ],
 })
 export class AppModule {}

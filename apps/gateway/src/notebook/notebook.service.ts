@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DrizzleService } from 'apps/gateway/src/drizzle/drizzle.service';
-import { notebooks, users } from 'apps/gateway/src/drizzle/schema';
+import { notebooks } from 'apps/gateway/src/drizzle/schema';
 import { and, eq } from 'drizzle-orm';
 import { CreateNotebookDto, EditNotebookDto } from './dto';
 
@@ -32,8 +32,7 @@ export class NotebookService {
     return this.drizzle.db
       .select()
       .from(notebooks)
-      .leftJoin(users, eq(users.id, userId))
-      .where(and(eq(users.id, userId), eq(notebooks.authorId, userId)));
+      .where(and(eq(notebooks.authorId, userId)));
   }
 
   getNotebookById(userId: string, notebookId: string) {

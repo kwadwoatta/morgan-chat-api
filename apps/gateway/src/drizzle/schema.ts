@@ -57,7 +57,7 @@ export const vector = customType<{
   default: false;
 }>({
   dataType(config) {
-    return `vector(${config?.dimension ?? 256})`;
+    return `vector(${config?.dimension ?? 768})`;
   },
   toDriver(value: number[]): string {
     return JSON.stringify(value);
@@ -72,8 +72,9 @@ export const documents = pgTable('documents', {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name'),
-  storageLink: text('storage_link'),
-  embedding: vector('embedding', { dimension: 256 }).notNull(),
+  // thumbnailLink: text('thumbnail_link'),
+  embedding: vector('embedding', { dimension: 768 }).notNull(),
+  content: text('content').notNull(),
   embeddingState: embeddingStateEnum('pending').notNull(),
   notebookId: uuid('notebook_id')
     .notNull()

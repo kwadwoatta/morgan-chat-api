@@ -32,14 +32,14 @@ export class DocumentController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: 1000 }),
+          new MaxFileSizeValidator({ maxSize: 10_000_000 }),
           new FileTypeValidator({ fileType: 'application/pdf' }),
         ],
       }),
     )
-    files: Array<Express.Multer.File>,
+    file: Express.Multer.File,
   ) {
-    await this.documentService.uploadDocument(userId, notebookId, files);
+    await this.documentService.create(userId, notebookId, file);
   }
 
   @Get()

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package ai;
+
+service EmbeddingService {
+    rpc EmbedDocument(EmbedDocumentDto) returns (Embedding) {}
+}
+
+service ChatService {
+    rpc Chat(stream ChatDto) returns (stream Answer) {}
+}
+
+message EmbedDocumentDto {
+    string filename = 1;
+    bytes content = 2;
+}
+
+message Embedding {
+    repeated float values = 1;
+    string content = 2;
+}
+
+message ChatDto {
+    Embedding embedding = 1;
+    string question = 2;
+}
+
+message Answer {
+    string answer = 1;
+}

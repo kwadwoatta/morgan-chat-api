@@ -5,15 +5,11 @@ import {
 import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
 import { Provider } from '@nestjs/common';
 import { PoolConfig } from 'pg';
-// import { Client } from 'pg';
 
 export const PgAsyncProvider = 'PgAsyncProvider';
 
 export const PgClientProvider: Provider = {
   useFactory: async () => {
-    // const client = new Client({
-    //   connectionString: process.env.DB_URL,
-    // });
     const config = {
       postgresConnectionOptions: {
         connectionString: process.env.DB_URL,

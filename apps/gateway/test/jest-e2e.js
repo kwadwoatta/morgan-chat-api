@@ -9,6 +9,7 @@ const config = {
   },
   moduleNameMapper: {
     'apps/gateway/src/(.*)': '<rootDir>/../src/$1',
+    '@app/common': '<rootDir>/../../../libs/common/src/index.ts',
   },
   bail: true,
 };
