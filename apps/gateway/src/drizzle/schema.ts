@@ -73,8 +73,8 @@ export const documents = pgTable('documents', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name'),
   // thumbnailLink: text('thumbnail_link'),
-  embedding: vector('embedding', { dimension: 768 }).notNull(),
-  content: text('content').notNull(),
+  embedding: vector('embedding', { dimension: 768 }),
+  content: text('content'),
   embeddingState: embeddingStateEnum('pending').notNull(),
   notebookId: uuid('notebook_id')
     .notNull()

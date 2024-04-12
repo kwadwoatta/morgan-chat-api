@@ -1,4 +1,14 @@
 services:
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    env_file:
+      - .env
+    volumes:
+      - .env:/.env
+
   dev-db:
     image: pgvector/pgvector:pg16
     restart: always

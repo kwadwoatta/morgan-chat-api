@@ -1,3 +1,4 @@
+import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
@@ -20,6 +21,17 @@ import { UserModule } from './user/user.module';
     UploadModule,
     DocumentModule,
     NotebookModule,
+    BullModule.forRoot({
+      connection: {
+        host: process.env.REDIS_HOST,
+        port: Number.parseInt(process.env.REDIS_PORT),
+      },
+      defaultJobOptions: {
+        removeOnComplete: true,
+        removeOnFail: true,
+        attempts: 1,
+      },
+    }),
   ],
 })
 export class AppModule {}

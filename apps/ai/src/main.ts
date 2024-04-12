@@ -5,6 +5,8 @@ import { join } from 'path';
 import { AiModule } from './ai.module';
 
 async function bootstrap() {
+  console.log({ env: process.env.GRPC_URL });
+  console.log({ AI_PACKAGE_NAME });
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AiModule,
     {
@@ -14,6 +16,7 @@ async function bootstrap() {
         package: AI_PACKAGE_NAME,
         maxReceiveMessageLength: 10_000_000,
         maxSendMessageLength: 10_000_000,
+        url: process.env.GRPC_URL,
       },
     },
   );

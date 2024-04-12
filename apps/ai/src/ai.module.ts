@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { EmbeddingModule } from './embedding/embedding.module';
 import { ChatModule } from './chat/chat.module';
+import { EmbeddingModule } from './embedding/embedding.module';
 
 @Module({
   imports: [EmbeddingModule, ChatModule],

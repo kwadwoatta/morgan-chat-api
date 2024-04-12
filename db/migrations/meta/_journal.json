@@ -15,6 +15,13 @@
       "when": 1712756378623,
       "tag": "0001_sour_the_enforcers",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1712890744210,
+      "tag": "0002_illegal_molly_hayes",
+      "breakpoints": true
     }
   ]
 }
