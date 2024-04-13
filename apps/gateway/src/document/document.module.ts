@@ -22,7 +22,6 @@ import { DocumentService } from './document.service';
           protoPath: join(__dirname, '../ai.proto'),
           maxSendMessageLength: 10_000_000,
           maxReceiveMessageLength: 10_000_000,
-          url: process.env.GRPC_URL,
         },
       },
     ]),

@@ -1,3 +1,4 @@
+import { ValidateUUIDPipe } from '@app/common/pipe';
 import {
   Controller,
   Delete,
@@ -16,6 +17,8 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GetUser } from 'apps/gateway/src/auth/decorator';
 import { JwtGuard } from 'apps/gateway/src/auth/guard';
+import { GetNotebook } from '../notebook/decorator/get-notebook.decorator';
+import { Notebook } from '../notebook/entities';
 import { DocumentService } from './document.service';
 
 @UseGuards(JwtGuard)
@@ -28,7 +31,7 @@ export class DocumentController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadDocument(
     @GetUser('id') userId: string,
-    @Param('notebookId') notebookId: string,
+    @GetNotebook() notebook: Notebook,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -39,33 +42,31 @@ export class DocumentController {
     )
     file: Express.Multer.File,
   ) {
-    await this.documentService.create(userId, notebookId, file);
+    await this.documentService.create(userId, notebook.id, file);
   }
 
   @Get()
   getDocuments(
     @GetUser('id') userId: string,
-    @Param('notebookId') notebookId: string,
+    @GetNotebook() notebook: Notebook,
   ) {
-    return this.documentService.getDocuments(userId, notebookId);
+    return this.documentService.getDocuments(userId, notebook.id);
   }
 
   @Get(':documentId')
   getDocumentById(
-    @GetUser('id') userId: string,
-    @Param('notebookId') notebookId: string,
-    @Param('documentId') documentId: string,
+    @GetNotebook() notebook,
+    @Param('documentId', ValidateUUIDPipe) documentId: string,
   ) {
-    return this.documentService.getDocumentById(userId, documentId);
+    return this.documentService.getDocumentById(notebook.id, documentId);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':documentId')
   deleteDocument(
-    @GetUser('id') userId: string,
-    @Param('notebookId') notebookId: string,
-    @Param('documentId') documentId: string,
+    @GetNotebook() notebook: Notebook,
+    @Param('documentId', ValidateUUIDPipe) documentId: string,
   ) {
-    return this.documentService.deleteDocument(userId, documentId);
+    return this.documentService.deleteDocument(notebook.id, documentId);
   }
 }

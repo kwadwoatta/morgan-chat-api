@@ -1,3 +1,4 @@
+import { ValidateUUIDPipe } from '@app/common/pipe';
 import {
   Body,
   Controller,
@@ -14,7 +15,6 @@ import { GetUser } from 'apps/gateway/src/auth/decorator';
 import { JwtGuard } from 'apps/gateway/src/auth/guard';
 import { CreateNotebookDto, EditNotebookDto } from './dto';
 import { NotebookService } from './notebook.service';
-import { ValidateUUIDPipe } from './pipe/validate-uuid.pipe';
 
 @UseGuards(JwtGuard)
 @Controller('notebooks')
