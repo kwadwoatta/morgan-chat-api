@@ -6,12 +6,17 @@ export const protobufPackage = "ai";
 
 export interface EmbedDocumentDto {
   filename: string;
-  content: Uint8Array;
+  contentAsUint8Array: Uint8Array;
+}
+
+export interface EmbeddedDocuments {
+  embeddedDocuments: Embedding[];
 }
 
 export interface Embedding {
-  values: number[];
-  content: string;
+  embedding: number[];
+  pageContent: string;
+  metadata: any | undefined;
 }
 
 export interface ChatDto {
@@ -26,11 +31,13 @@ export interface Answer {
 export const AI_PACKAGE_NAME = "ai";
 
 export interface EmbeddingServiceClient {
-  embedDocument(request: EmbedDocumentDto): Observable<Embedding>;
+  embedDocument(request: EmbedDocumentDto): Observable<EmbeddedDocuments>;
 }
 
 export interface EmbeddingServiceController {
-  embedDocument(request: EmbedDocumentDto): Promise<Embedding> | Observable<Embedding> | Embedding;
+  embedDocument(
+    request: EmbedDocumentDto,
+  ): Promise<EmbeddedDocuments> | Observable<EmbeddedDocuments> | EmbeddedDocuments;
 }
 
 export function EmbeddingServiceControllerMethods() {

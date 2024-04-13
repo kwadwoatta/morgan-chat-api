@@ -4,12 +4,17 @@ import {
   QUEUE_EMBED,
 } from '@app/common';
 import { Processor } from '@nestjs/bullmq';
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Job } from 'bullmq';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { DrizzleService } from '../drizzle/drizzle.service';
-import { documents } from '../drizzle/schema';
+import { documents, embeddings } from '../drizzle/schema';
 import { QUEUE_EMBED_OPS } from './enums/queue-embed.enum';
 import { QueueEmbedJob } from './interface/job.interface';
 import { WorkerHostProcessor } from './worker-host.processor';
@@ -24,7 +29,7 @@ export class QueueEmbedProcessor
 
   constructor(
     @Inject(EMBEDDING_SERVICE_NAME) private clientGrpc: ClientGrpc,
-    private drizzle: DrizzleService,
+    private readonly drizzle: DrizzleService,
   ) {
     super();
   }
@@ -37,32 +42,38 @@ export class QueueEmbedProcessor
 
   async process(job: Job<QueueEmbedJob, any, string>): Promise<any> {
     switch (job.name) {
-      case QUEUE_EMBED_OPS.ADD:
-        {
-          const { file, documentId } = job.data;
+      case QUEUE_EMBED_OPS.ADD: {
+        const { file, documentId } = job.data;
 
+        try {
           const embedding$ = this.embeddingService.embedDocument({
             filename: file.originalname,
-            content: file.buffer,
+            contentAsUint8Array: Buffer.from(file.buffer),
           });
 
-          console.log('updating document now');
+          embedding$.subscribe(({ embeddedDocuments }) => {
+            this.drizzle.db.transaction(async (tx) => {
+              embeddedDocuments.map(
+                async ({ embedding, metadata, pageContent }) => {
+                  await tx.insert(embeddings).values({
+                    documentId,
+                    embedding: embedding,
+                    content: pageContent,
+                    metadata: sql`${JSON.stringify(metadata)}::jsonb`, // or ::jsonb
+                  });
+                },
+              );
 
-          embedding$.subscribe(({ content, values: embedding }) => {
-            this.drizzle.db
-              .update(documents)
-              .set({
-                embeddingState: 'success',
-                content,
-                embedding,
-              })
-              .where(eq(documents.id, documentId));
+              await tx
+                .update(documents)
+                .set({ embeddingState: 'success', updatedAt: new Date() })
+                .where(eq(documents.id, documentId));
+            });
           });
+        } catch (error) {
+          throw new BadRequestException(JSON.stringify(error));
         }
-        break;
-
-      default:
-        break;
+      }
     }
   }
 }

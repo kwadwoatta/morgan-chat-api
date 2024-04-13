@@ -1,9 +1,9 @@
 import {
-  EmbedDocumentDto,
   EmbeddingServiceController,
   EmbeddingServiceControllerMethods,
 } from '@app/common';
 import { Controller } from '@nestjs/common';
+import { EmbedDocumentDto } from './dto/embed-document.dto';
 import { EmbeddingService } from './embedding.service';
 
 @Controller()

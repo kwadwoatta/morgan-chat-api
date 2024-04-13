@@ -22,6 +22,34 @@
       "when": 1712890744210,
       "tag": "0002_illegal_molly_hayes",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1713015650214,
+      "tag": "0003_same_epoch",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1713028882166,
+      "tag": "0004_cute_scrambler",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1713035517535,
+      "tag": "0005_silly_black_panther",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1713041525881,
+      "tag": "0006_curly_psylocke",
+      "breakpoints": true
     }
   ]
 }

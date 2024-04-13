@@ -20,8 +20,8 @@ import { DocumentService } from './document.service';
         options: {
           package: AI_PACKAGE_NAME,
           protoPath: join(__dirname, '../ai.proto'),
-          maxSendMessageLength: 10_000_000,
-          maxReceiveMessageLength: 10_000_000,
+          maxSendMessageLength: 100_000_000,
+          maxReceiveMessageLength: 100_000_000,
         },
       },
     ]),

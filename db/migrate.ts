@@ -10,8 +10,6 @@ import { PoolConfig } from 'pg';
 import * as schema from './../apps/gateway/src/drizzle/schema';
 
 async function main() {
-  console.log({ env: process.env });
-
   const config = {
     postgresConnectionOptions: {
       connectionString: process.env.DB_URL,

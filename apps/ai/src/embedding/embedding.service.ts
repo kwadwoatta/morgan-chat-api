@@ -1,8 +1,11 @@
-import { EmbedDocumentDto, Embedding } from '@app/common';
+import { EmbeddedDocuments, Embedding } from '@app/common';
+import { TaskType } from '@google/generative-ai';
 import { Document } from '@langchain/core/documents';
+import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
 import { Injectable } from '@nestjs/common';
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+import { EmbedDocumentDto } from './dto/embed-document.dto';
 
 @Injectable()
 export class EmbeddingService {
@@ -15,42 +18,37 @@ export class EmbeddingService {
       chunkOverlap: 0,
     });
 
-    const docBlob = new Blob([content]); // Convert docBuffer to a Blob
-    const loader = new PDFLoader(docBlob);
+    const blob = new Blob([content], { type: 'application/pdf' });
+    const loader = new PDFLoader(blob);
     const docs = await loader.load();
     const splits = await textSplitter.splitDocuments(docs);
     return splits;
   }
 
-  async embedDocument({
-    filename,
-    content,
-  }: EmbedDocumentDto): Promise<Embedding> {
-    // const splits = await this.splitDocument(content);
-    // let pageContent: string;
-    // const embeddingsArray: number[][] = [];
+  async embedDocument(dto: EmbedDocumentDto): Promise<EmbeddedDocuments> {
+    const { contentAsUint8Array, filename } = dto;
+    const splits = await this.splitDocument(contentAsUint8Array);
 
-    // const embeddings = new GoogleGenerativeAIEmbeddings({
-    //   apiKey: 'YOUR_API_KEY',
-    //   modelName: 'embedding-001', // 768 dimensions
-    //   taskType: TaskType.RETRIEVAL_DOCUMENT,
-    //   title: filename,
-    // });
+    const googleAiEmbeddings = new GoogleGenerativeAIEmbeddings({
+      modelName: 'embedding-001', // 768 dimensions
+      taskType: TaskType.RETRIEVAL_DOCUMENT,
+      title: filename,
+    });
 
-    // for (const split of splits) {
-    //   const embedding = await embeddings.embedQuery(split.pageContent);
-    //   embeddingsArray.push(embedding);
-    //   pageContent += split.pageContent;
-    // }
+    const embeddings = await googleAiEmbeddings.embedDocuments(
+      splits.map((split) => split.pageContent),
+    );
 
-    // const flattenedEmbeddings = embeddingsArray.flat().slice(0, 768); // Truncate the array to 768 dimensions
-    // while (flattenedEmbeddings.length < 768) {
-    //   flattenedEmbeddings.push(0); // Pad the array with zeros to reach 768 dimensions
-    // }
+    const embeddedDocuments: Embedding[] = embeddings.map(
+      (embedding, index) => ({
+        embedding,
+        pageContent: splits[index].pageContent,
+        metadata: splits[index].metadata,
+      }),
+    );
 
-    // return { values: flattenedEmbeddings, content: pageContent };
-    console.log('in ai microservice');
-    console.log({ filename });
-    return { values: [], content: '' };
+    return {
+      embeddedDocuments,
+    };
   }
 }

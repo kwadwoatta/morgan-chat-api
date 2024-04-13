@@ -1,0 +1,1 @@
+ALTER TABLE "embeddings" ALTER COLUMN "metadata" SET DATA TYPE text;

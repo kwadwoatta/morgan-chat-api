@@ -9,9 +9,9 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
+  id: uuid('id').defaultRandom().primaryKey(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  id: uuid('id').defaultRandom().primaryKey(),
   email: text('email').unique().notNull(),
   name: text('name'),
   hash: text('hash'),
@@ -24,9 +24,9 @@ export const userRelations = relations(users, ({ many }) => ({
 }));
 
 export const notebooks = pgTable('notebooks', {
+  id: uuid('id').defaultRandom().primaryKey(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  id: uuid('id').defaultRandom().primaryKey(),
   name: text('name'),
   description: text('description'),
   authorId: uuid('author_id')
@@ -68,22 +68,42 @@ export const vector = customType<{
 });
 
 export const documents = pgTable('documents', {
+  id: uuid('id').defaultRandom().primaryKey(),
+
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  id: uuid('id').defaultRandom().primaryKey(),
+
   name: text('name'),
-  // thumbnailLink: text('thumbnail_link'),
-  embedding: vector('embedding', { dimension: 768 }),
-  content: text('content'),
   embeddingState: embeddingStateEnum('pending').notNull(),
   notebookId: uuid('notebook_id')
     .notNull()
-    .references(() => notebooks.id),
+    .references(() => notebooks.id, { onDelete: 'cascade' }),
 });
 
 export const documentsRelations = relations(documents, ({ one }) => ({
   note: one(notebooks, {
     references: [notebooks.id],
     fields: [documents.notebookId],
+  }),
+}));
+
+export const embeddings = pgTable('embeddings', {
+  id: uuid('id').defaultRandom().primaryKey(),
+
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+
+  embedding: vector('embedding', { dimension: 768 }),
+  content: text('content'),
+  metadata: text('metadata'),
+  documentId: uuid('document_id')
+    .notNull()
+    .references(() => documents.id, { onDelete: 'cascade' }),
+});
+
+export const embeddingsRelations = relations(embeddings, ({ one }) => ({
+  document: one(documents, {
+    references: [documents.id],
+    fields: [embeddings.documentId],
   }),
 }));

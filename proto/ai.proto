@@ -1,9 +1,11 @@
 syntax = "proto3";
 
+import "google/protobuf/struct.proto";
+
 package ai;
 
 service EmbeddingService {
-    rpc EmbedDocument(EmbedDocumentDto) returns (Embedding) {}
+    rpc EmbedDocument(EmbedDocumentDto) returns (EmbeddedDocuments) {}
 }
 
 service ChatService {
@@ -12,12 +14,17 @@ service ChatService {
 
 message EmbedDocumentDto {
     string filename = 1;
-    bytes content = 2;
+    bytes contentAsUint8Array = 2;
+}
+
+message EmbeddedDocuments {
+    repeated Embedding embeddedDocuments = 1;
 }
 
 message Embedding {
-    repeated float values = 1;
-    string content = 2;
+    repeated double embedding = 1;
+    string pageContent = 2;
+    google.protobuf.Value metadata = 3;
 }
 
 message ChatDto {

@@ -26,7 +26,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "dotenv -e .env.test -- pnpm db:test:restart && dotenv -e .env.test -- jest --config ./apps/gateway/test/jest-e2e.js",
-    "proto:generate": "protoc --ts_proto_opt=nestJs=true --ts_proto_out=. ./proto/ai.proto --ts_proto_opt=esModuleInterop=true"
+    "proto:generate": "protoc --ts_proto_opt=nestJs=true --ts_proto_out=./libs/common/src/types ./proto/ai.proto --ts_proto_opt=esModuleInterop=true"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.549.0",
@@ -55,6 +55,7 @@
     "passport-jwt": "^4.0.1",
     "pdf-parse": "^1.1.1",
     "pg": "^8.11.3",
+    "protobufjs": "^7.2.6",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "ts-proto": "^1.171.0"

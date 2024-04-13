@@ -14,10 +14,10 @@ export const PgClientProvider: Provider = {
       postgresConnectionOptions: {
         connectionString: process.env.DB_URL,
       } as PoolConfig,
-      tableName: 'morganchat',
+      tableName: 'embeddings',
       columns: {
         idColumnName: 'id',
-        vectorColumnName: 'vector',
+        vectorColumnName: 'embedding',
         contentColumnName: 'content',
         metadataColumnName: 'metadata',
       },
