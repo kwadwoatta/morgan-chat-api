@@ -43,6 +43,27 @@ export const notebooksRelations = relations(notebooks, ({ one, many }) => ({
     fields: [notebooks.authorId],
   }),
   documents: many(documents),
+  chats: many(chats),
+}));
+
+export const chats = pgTable('chats', {
+  id: uuid('id').defaultRandom().primaryKey(),
+
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+
+  notebookId: uuid('notebook_id')
+    .notNull()
+    .references(() => notebooks.id, { onDelete: 'cascade' }),
+  documentsIds: uuid('documents_ids').array().notNull(),
+  // .references(() => documents.id, { onDelete: 'cascade' }),
+});
+
+export const chatsRelations = relations(chats, ({ one }) => ({
+  notebook: one(notebooks, {
+    references: [notebooks.id],
+    fields: [chats.notebookId],
+  }),
 }));
 
 export const embeddingStateEnum = pgEnum('embedding_state', [

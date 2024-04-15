@@ -1,0 +1,1 @@
+ALTER TABLE "chats" RENAME COLUMN "document_id" TO "documents_ids";

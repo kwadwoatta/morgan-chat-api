@@ -5,50 +5,15 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1712682770916,
-      "tag": "0000_woozy_callisto",
+      "when": 1713171961601,
+      "tag": "0000_brainy_red_hulk",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "5",
-      "when": 1712756378623,
-      "tag": "0001_sour_the_enforcers",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1712890744210,
-      "tag": "0002_illegal_molly_hayes",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1713015650214,
-      "tag": "0003_same_epoch",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1713028882166,
-      "tag": "0004_cute_scrambler",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1713035517535,
-      "tag": "0005_silly_black_panther",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1713041525881,
-      "tag": "0006_curly_psylocke",
+      "when": 1713172369796,
+      "tag": "0001_absurd_psynapse",
       "breakpoints": true
     }
   ]

@@ -15,9 +15,9 @@ import { Job } from 'bullmq';
 import { eq, sql } from 'drizzle-orm';
 import { DrizzleService } from '../drizzle/drizzle.service';
 import { documents, embeddings } from '../drizzle/schema';
+import { WorkerHostProcessor } from '../queue/worker-host.processor';
 import { QUEUE_EMBED_OPS } from './enums/queue-embed.enum';
 import { QueueEmbedJob } from './interface/job.interface';
-import { WorkerHostProcessor } from './worker-host.processor';
 
 @Injectable()
 @Processor(QUEUE_EMBED)

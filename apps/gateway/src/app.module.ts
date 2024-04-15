@@ -2,6 +2,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { ChatModule } from './chat/chat.module';
 import { DocumentModule } from './document/document.module';
 import { DrizzleModule } from './drizzle/drizzle.module';
 import { NotebookModule } from './notebook/notebook.module';
@@ -21,6 +22,7 @@ import { UserModule } from './user/user.module';
     UploadModule,
     DocumentModule,
     NotebookModule,
+    ChatModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST,
