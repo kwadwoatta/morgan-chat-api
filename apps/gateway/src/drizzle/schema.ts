@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import {
   customType,
+  jsonb,
   pgEnum,
   pgTable,
   text,
@@ -95,7 +96,7 @@ export const embeddings = pgTable('embeddings', {
 
   embedding: vector('embedding', { dimension: 768 }),
   content: text('content'),
-  metadata: text('metadata'),
+  metadata: jsonb('metadata'),
   documentId: uuid('document_id')
     .notNull()
     .references(() => documents.id, { onDelete: 'cascade' }),
